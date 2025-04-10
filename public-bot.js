@@ -13,6 +13,7 @@ function initPublicBot() {
   chatContainer.style.right = "20px";
   chatContainer.style.width = "415px";
   chatContainer.style.height = "700px";
+  chatContainer.style.maxHeight = "unset";
   chatContainer.style.background = "#fff";
   chatContainer.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
   chatContainer.style.borderRadius = "12px";
