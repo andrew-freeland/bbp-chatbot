@@ -1,7 +1,7 @@
-// public-bot.js — Loads UI into #chat-interface and handles chat behavior
+// public-bot.js — Legacy-safe version for SquareSpace
 
 function initPublicBot() {
-  const chatContainer = document.getElementById("chat-interface");
+  var chatContainer = document.getElementById("chat-interface");
   if (!chatContainer) return;
 
   // Clear container
@@ -9,11 +9,10 @@ function initPublicBot() {
 
   // Style wrapper
   chatContainer.style.position = "fixed";
-  chatContainer.style.bottom = "100px";
+  chatContainer.style.bottom = "90px";
   chatContainer.style.right = "20px";
   chatContainer.style.width = "415px";
-  chatContainer.style.height = "700px";
-  chatContainer.style.maxHeight = "550px";
+  chatContainer.style.maxHeight = "80vh";
   chatContainer.style.background = "#fff";
   chatContainer.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
   chatContainer.style.borderRadius = "12px";
@@ -25,12 +24,12 @@ function initPublicBot() {
 
   // Slide-up animation
   chatContainer.style.opacity = 0;
-  setTimeout(() => {
+  setTimeout(function () {
     chatContainer.style.opacity = 1;
   }, 200);
 
   // Minimize icon
-  const minimizeBtn = document.createElement("div");
+  var minimizeBtn = document.createElement("div");
   minimizeBtn.innerHTML = "—";
   minimizeBtn.style.position = "absolute";
   minimizeBtn.style.top = "8px";
@@ -38,12 +37,12 @@ function initPublicBot() {
   minimizeBtn.style.cursor = "pointer";
   minimizeBtn.style.fontSize = "20px";
   minimizeBtn.style.color = "#5B6770";
-  minimizeBtn.onclick = () => {
+  minimizeBtn.onclick = function () {
     chatContainer.style.display = "none";
   };
 
   // Chat messages area
-  const messages = document.createElement("div");
+  var messages = document.createElement("div");
   messages.style.flex = "1";
   messages.style.overflowY = "auto";
   messages.style.padding = "16px";
@@ -51,55 +50,66 @@ function initPublicBot() {
   messages.style.flexDirection = "column";
   messages.style.gap = "8px";
 
-  // Greeting header with animation
-  const greeting = document.createElement("div");
-  greeting.innerHTML = `<strong style="color:#3E4A59; font-size: 1rem; display:block; line-height: 1.5; animation: fadeIn 0.6s ease;">
-    HELLO! IN A FEW WORDS,<br>HOW CAN WE HELP YOU TODAY?
-  </strong>`;
+  // Greeting message
+  var greeting = document.createElement("div");
+  greeting.innerHTML = '<strong style="color:#3E4A59; font-size: 1rem; display:block; line-height: 1.5;">HELLO! IN A FEW WORDS,<br>HOW CAN WE HELP YOU TODAY?</strong>';
   greeting.style.marginTop = "20px";
   greeting.style.marginRight = "30px";
   messages.appendChild(greeting);
   // Button options
-  const buttonRow = document.createElement("div");
+  var buttonRow = document.createElement("div");
   buttonRow.style.display = "flex";
   buttonRow.style.flexDirection = "column";
   buttonRow.style.gap = "10px";
   buttonRow.style.marginTop = "16px";
 
-  [
+  var options = [
     "Learn about our services",
     "Schedule a call",
-    "Access account data",
-  ].forEach((text) => {
-    const btn = document.createElement("button");
-    btn.textContent = text;
-    btn.style.padding = "12px";
-    btn.style.background = "#F5F5F5";
-    btn.style.border = "1px solid #ccc";
-    btn.style.borderRadius = "6px";
-    btn.style.cursor = "pointer";
-    btn.style.fontSize = "15px";
-    btn.style.color = "#2A2A2A";
-    btn.style.fontWeight = "500";
-    btn.onmouseover = () => (btn.style.background = "#EB760F");
-    btn.onmouseout = () => (btn.style.background = "#F5F5F5");
-    btn.onclick = () => {
-      addUserMessage(text);
-      addBotMessage("Thanks! Let me help with that...");
-    };
-    buttonRow.appendChild(btn);
-  });
+    "Access account data"
+  ];
+
+  for (var i = 0; i < options.length; i++) {
+    (function (text) {
+      var btn = document.createElement("button");
+      btn.textContent = text;
+      btn.style.padding = "12px";
+      btn.style.background = "#F5F5F5";
+      btn.style.border = "1px solid #ccc";
+      btn.style.borderRadius = "6px";
+      btn.style.cursor = "pointer";
+      btn.style.fontSize = "15px";
+      btn.style.color = "#2A2A2A";
+      btn.style.fontWeight = "500";
+
+      btn.onmouseover = function () {
+        btn.style.background = "#EB760F";
+        btn.style.color = "#fff";
+      };
+      btn.onmouseout = function () {
+        btn.style.background = "#F5F5F5";
+        btn.style.color = "#2A2A2A";
+      };
+
+      btn.onclick = function () {
+        addUserMessage(text);
+        addBotMessage("Thanks! Let me help with that...");
+      };
+
+      buttonRow.appendChild(btn);
+    })(options[i]);
+  }
 
   messages.appendChild(buttonRow);
 
-  // Input + Send button container
-  const inputContainer = document.createElement("div");
+  // Input + Send container
+  var inputContainer = document.createElement("div");
   inputContainer.style.display = "flex";
   inputContainer.style.borderTop = "1px solid #ccc";
   inputContainer.style.padding = "10px";
   inputContainer.style.gap = "8px";
 
-  const input = document.createElement("input");
+  var input = document.createElement("input");
   input.type = "text";
   input.placeholder = "Ask a question...";
   input.style.flex = "1";
@@ -107,7 +117,7 @@ function initPublicBot() {
   input.style.borderRadius = "6px";
   input.style.border = "1px solid #ccc";
 
-  const sendBtn = document.createElement("button");
+  var sendBtn = document.createElement("button");
   sendBtn.textContent = "Send";
   sendBtn.style.padding = "10px 16px";
   sendBtn.style.background = "#EB760F";
@@ -116,7 +126,7 @@ function initPublicBot() {
   sendBtn.style.borderRadius = "6px";
   sendBtn.style.cursor = "pointer";
 
-  sendBtn.onclick = () => {
+  sendBtn.onclick = function () {
     if (input.value.trim() !== "") {
       addUserMessage(input.value);
       input.value = "";
@@ -127,7 +137,7 @@ function initPublicBot() {
   inputContainer.appendChild(sendBtn);
   // Add message functions
   function addUserMessage(text) {
-    const msg = document.createElement("div");
+    var msg = document.createElement("div");
     msg.textContent = text;
     msg.style.alignSelf = "flex-end";
     msg.style.background = "#fdf5ed";
@@ -142,7 +152,7 @@ function initPublicBot() {
   }
 
   function addBotMessage(text) {
-    const msg = document.createElement("div");
+    var msg = document.createElement("div");
     msg.textContent = text;
     msg.style.alignSelf = "flex-start";
     msg.style.background = "#e7e7e7";
@@ -156,7 +166,7 @@ function initPublicBot() {
   }
 
   // Language dropdown
-  const langSelect = document.createElement("select");
+  var langSelect = document.createElement("select");
   langSelect.style.position = "absolute";
   langSelect.style.bottom = "16px";
   langSelect.style.left = "16px";
@@ -166,15 +176,17 @@ function initPublicBot() {
   langSelect.style.borderRadius = "6px";
   langSelect.style.background = "#fff";
   langSelect.style.color = "#3E4A59";
-  ["English", "Español", "Română"].forEach((lang) => {
-    const option = document.createElement("option");
-    option.value = lang;
-    option.textContent = lang;
+
+  var languages = ["English", "Español", "Română"];
+  for (var j = 0; j < languages.length; j++) {
+    var option = document.createElement("option");
+    option.value = languages[j];
+    option.textContent = languages[j];
     langSelect.appendChild(option);
-  });
+  }
 
   // Floating toggle button
-  const toggleBtn = document.createElement("div");
+  var toggleBtn = document.createElement("div");
   toggleBtn.innerHTML = "💬";
   toggleBtn.style.position = "fixed";
   toggleBtn.style.bottom = "20px";
@@ -192,12 +204,12 @@ function initPublicBot() {
   toggleBtn.style.zIndex = "9999";
   toggleBtn.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
 
-  toggleBtn.onclick = () => {
-    const isOpen = chatContainer.style.display !== "none";
+  toggleBtn.onclick = function () {
+    var isOpen = chatContainer.style.display !== "none";
     chatContainer.style.display = isOpen ? "none" : "flex";
   };
 
-  // Final assembly
+  // Final DOM assembly
   document.body.appendChild(toggleBtn);
   chatContainer.appendChild(minimizeBtn);
   chatContainer.appendChild(messages);
