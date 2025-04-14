@@ -1,0 +1,219 @@
+<style>
+/* ===== HEADER NAV STYLING FOR BBP ===== */
+
+/* GENERAL NAV LINK STYLING */
+header nav a {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  margin: 0 14px !important;
+  color: #2A2A2A !important;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+  text-decoration: none !important;
+  transition: color 0.3s ease;
+}
+
+/* UNDERLINE ON HOVER */
+header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #EB760F;
+  transition: width 0.3s ease;
+  z-index: 2;
+}
+
+header nav a:hover::after {
+  width: 100%;
+}
+
+/* WRAP NAV ITEMS + ALIGN TO HERO */
+.Header-nav-inner {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-end !important;
+  gap: 12px;
+  row-gap: 6px;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  box-sizing: border-box;
+}
+
+/* CTA BUTTON (SCHEDULE CALL) */
+.header-actions a[href*="schedule"] {
+  background-color: #EB760F !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 10px 22px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: all 0.3s ease;
+}
+
+.header-actions a[href*="schedule"]:hover {
+  background-color: #cf6109 !important;
+  transform: scale(1.05);
+}
+
+/* LOGIN LINK (text will be replaced by JS below) */
+.header-actions a[href*="login"] {
+  font-size: 14px !important;
+  padding-left: 16px;
+  color: #5B6770 !important;
+  text-decoration: none;
+}
+
+/* FOLDER DROPDOWN ARROW */
+.Header-nav-folder-title {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ROTATING ARROW STYLE */
+.Header-nav-folder-title::after {
+  content: "▼";
+  display: inline-block;
+  font-size: 10px;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+
+/* ROTATE ARROW ON MOBILE OPEN */
+@media screen and (max-width: 768px) {
+  .Header-nav-folder.open .Header-nav-folder-title::after {
+    transform: rotate(180deg);
+  }
+}
+
+/* === DESKTOP DROPDOWN === */
+@media screen and (min-width: 769px) {
+  .Header-nav-folder-content {
+    display: none !important;
+    position: absolute !important;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    min-width: 160px;
+    z-index: 1000;
+  }
+
+  .Header-nav-folder:hover .Header-nav-folder-content {
+    display: block !important;
+  }
+
+  .Header-nav-folder-content a {
+    display: block;
+    padding: 8px 16px;
+    white-space: nowrap;
+    font-size: 14px;
+    color: #2A2A2A !important;
+    text-decoration: none;
+  }
+
+  .Header-nav-folder-content a:hover {
+    background-color: #F5F5F5;
+  }
+}
+
+/* === MOBILE DROPDOWN === */
+@media screen and (max-width: 768px) {
+  .Header-nav-folder-content {
+    display: none;
+    padding-left: 15px;
+    padding-top: 10px;
+  }
+
+  .Header-nav-folder.open .Header-nav-folder-content {
+    display: block;
+  }
+
+  .Header-nav-folder-content a {
+    display: block;
+    font-size: 14px;
+    padding: 5px 0;
+    text-decoration: none;
+    color: #2A2A2A !important;
+  }
+
+  .Header-nav-folder-content a:hover {
+    background-color: #f5f5f5;
+  }
+
+  .Header-nav-folder-title {
+    width: 100%;
+    font-weight: 600;
+  }
+}
+
+/* RESPONSIVE FONT + PADDING ADJUSTMENTS */
+@media screen and (max-width: 1024px) {
+  .Header-nav-item a {
+    font-size: 14px !important;
+    padding: 6px 10px !important;
+  }
+
+  .Header-nav-folder-content {
+    min-width: 140px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Header-nav-item a {
+    font-size: 13px !important;
+    padding: 5px 8px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .Header-nav-item a {
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+  }
+}
+</style>
+
+<script>
+// Enable tap-to-expand dropdowns and rename Login link
+document.addEventListener("DOMContentLoaded", function() {
+  var folders = document.querySelectorAll(".Header-nav-folder");
+
+  function toggleMobileDropdown(event) {
+    if (window.innerWidth <= 768) {
+      event.preventDefault();
+      var parent = event.target.closest(".Header-nav-folder");
+      if (parent.classList.contains("open")) {
+        parent.classList.remove("open");
+      } else {
+        for (var i = 0; i < folders.length; i++) {
+          folders[i].classList.remove("open");
+        }
+        parent.classList.add("open");
+      }
+    }
+  }
+
+  for (var i = 0; i < folders.length; i++) {
+    var title = folders[i].querySelector(".Header-nav-folder-title");
+    if (title) {
+      title.addEventListener("click", toggleMobileDropdown);
+    }
+  }
+
+  // ✅ Rename any Login button text to "Client Login"
+  var loginLinks = document.querySelectorAll('.header-actions a[href*="login"]');
+  for (var i = 0; i < loginLinks.length; i++) {
+    loginLinks[i].textContent = "Client Login";
+  }
+});
+</script>
