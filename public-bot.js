@@ -1,5 +1,15 @@
 // public-bot.js — Legacy-safe version for SquareSpace
 
+if (typeof handleUserMessage === "function") {
+        handleUserMessage(msg);
+      } else {
+        messages.innerHTML += `<div class="msg bot"><strong>Bot:</strong> (handler not found)</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
+
 function initPublicBot() {
   var chatContainer = document.getElementById("chat-interface");
   if (!chatContainer) return;
